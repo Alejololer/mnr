@@ -2,14 +2,22 @@ import { useState, useEffect } from 'react';
 import { fetchContest } from '../api-client';
 import Header from './header';
 
-const Contest = ({initialContest}) => {
+const Contest = ({initialContest, onContestListClick}) => {
     const [contest, setContest] = useState(initialContest);
 
-    // useEffect(() => {
-    //     fetchContest(initialContest.id).then((contest) => {
-    //         setContest(contest);
-    //     });
-    // }, [initialContest.id]);
+    useEffect(() => {
+        if(!contest.names){
+            fetchContest(contest.id).then((contest) => {
+                setContest(contest);
+            });
+        }
+    }, [contest.id, contest.names]);
+
+    const handleClickContestList = (event) => {
+        event.preventDefault();
+        onContestListClick()
+    }
+
     return (
         <>
             <Header message={contest.contestName}/>
@@ -20,6 +28,9 @@ const Contest = ({initialContest}) => {
                 <div className="description">
                     {contest.description}
                 </div>
+                <a href="/" className="link" onClick={handleClickContestList}>
+                    Contest List
+                </a>
             </div>
     </>
     );

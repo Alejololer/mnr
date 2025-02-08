@@ -6,11 +6,13 @@ import { fetchContestsLists } from "../api-client";
 import Header from "./header";
 
 const ContestList = ({initialContests, onContestClick}) => {
-    const [contests, setContests] = useState(initialContests);
+    const [contests, setContests] = useState(initialContests ?? []);
     useEffect(() => {
-        // fetchContestsLists().then((contests) => {
-        //     setContests(contests);
-        // });
+        if(!initialContests)
+        {    
+            fetchContestsLists().then((contests) => {
+            setContests(contests)});
+        }
     }, []);
     return (
         <>
