@@ -2,21 +2,25 @@ import axios from "axios";
 import ContestPreview from "./contest-preview";
 import { API_SERVER_URL } from "../public-config";
 import { useEffect, useState } from "react";
-import { fetchContests } from "../api-client";
+import { fetchContestsLists } from "../api-client";
+import Header from "./header";
 
-const ContestList = ({initialContests}) => {
+const ContestList = ({initialContests, onContestClick}) => {
     const [contests, setContests] = useState(initialContests);
     useEffect(() => {
-        // fetchContests().then((contests) => {
+        // fetchContestsLists().then((contests) => {
         //     setContests(contests);
         // });
     }, []);
     return (
-        <div className="contest-list">
-            {contests.map((contest) => {
-                return <ContestPreview key = {contest.id} contest = {contest}/>
-            })}
-        </div>
+        <>
+            <Header message="Naming Contests"/>
+            <div className="contest-list">
+                {contests.map((contest) => {
+                    return <ContestPreview key = {contest.id} contest = {contest} onClick = {onContestClick}/>
+                })}
+            </div>
+        </>
     );
 };
 
