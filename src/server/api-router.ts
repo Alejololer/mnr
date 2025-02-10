@@ -51,7 +51,27 @@ router.post("/contest/:contestId", async(req, res) => {
         {returnDocument: "after"}
     );
     
-    res.send({updatedContest: doc});  // Changed from doc.value
+    res.send({updatedContest: doc}); 
+});
+
+router.post("/newContest", async(req, res) => {
+    const client = await connectClient();
+
+    const newContest = {
+        id: req.body.contestName.toLowerCase().replace(/\s/g, "-"),
+        contestName: req.body.contestName,
+        description: req.body.description,
+        categoryName: req.body.categoryName,
+    };
+
+    let doc = await client.collection("contests")
+    .insertOne(newContest);
+
+    if (doc.acknowledged === true) {
+        return res.send({ newContestId: newContest.id });
+    }
+    
+    res.status(500).send({});
 });
     
 
